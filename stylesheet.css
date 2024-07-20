@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "%font-family";
+  src: url("../fonts/%font-file");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "%font-family";
+  src: url("../fonts/%font-file");
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: "%font-family";
+  src: url("../fonts/%font-file");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "%font-family";
+  src: url("../fonts/%font-file");
+  font-weight: bold;
+  font-style: italic;
+}
+
+*{
+  direction: rtl;
+  text-align: center;
+  font-family: "%font-family";
+}
+
+h1 {
+  font-size: 200%;
+  text-align: center;
+}
+
+h2 {
+  font-size: 200%;
+  text-align: center;
+}
+
+.basmala {
+  text-align: center;
+}
