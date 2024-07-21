@@ -39,7 +39,7 @@ download_and_verify() {
     echo "File $zip_path already exists."
   else
     echo "Downloading $zip_file..."
-    wget -O "$zip_path" "$BASE_URL/$zip_file"
+    curl -sSL --output "$zip_path" "$BASE_URL/$zip_file"
   fi
 
   echo "Verifying SHA-1 checksum..."
