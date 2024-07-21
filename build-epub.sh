@@ -92,24 +92,46 @@ JSON_FILE="$1"
 TTF_FILE="$2"
 TITLE="$3"
 
-font_family=$(fc-query -f '%{family[0]}\n' "$TTF_FILE")
+EBOOK="$CACHE_DIR/$TITLE"
+META="$EBOOK/META-INF"
+EPUB="$EBOOK/EPUB"
 
-# Process JSON data using jq script (modify jq script as needed)
-PROCESSED_CONTENT=$(jq --from-file merge-moshaf.jq -r < "$JSON_FILE" | sed 'y/0123456789/۰۱۲۳۴۵۶۷۸۹/')
+mkdir -p "$EBOOK"
+mkdir -p "$META"
+mkdir -p "$EPUB"/{styles,fonts,text}
 
-# Convert processed content to epub with pandoc
-pandoc --css <(sed "s/%font-family/$font_family/;s/%font-file/$(basename "$TTF_FILE")/" < stylesheet.css) \
-  --epub-embed-font="$TTF_FILE" \
-  --from markdown \
-  -o "$TITLE.epub" \
-  --metadata title="$TITLE" <<< "$PROCESSED_CONTENT"
+FONT_FAMILY=$(fc-query -f '%{family[0]}\n' "$TTF_FILE")
+TOC_XHTML=$(jq --from-file jq/build-toc-xhtml.jq -r < "$JSON_FILE")
+TOC_NCX=$(jq --from-file jq/build-toc-ncx.jq -r < "$JSON_FILE")
+QURAN_XHTML=$(jq --from-file jq/build-quran-xhtml.jq -r < "$JSON_FILE")
 
-# Handle success/failure
-if [ $? -eq 0 ]; then
-  echo "EPUB built successfully: $TITLE.epub"
-else
-  echo "Error building EPUB. Please check the logs or provided scripts."
-fi
+cp "$TTF_FILE" "$EPUB/fonts/"
+
+template() {
+  file=$1
+  shift
+  eval "$(printf 'local %s\n' "$@")
+cat <<EOF
+$(cat "templates/$file")
+EOF"
+}
+
+
+template mimetype > "$EBOOK/mimetype"
+template container.xml > "$META/container.xml"
+template com.apple.ibooks.display-options.xml > "$META/com.apple.ibooks.display-options.xml"
+template stylesheet.css > "$EPUB/styles/stylesheet.css"
+template nav.xhtml > "$EPUB/nav.xhtml"
+template toc.ncx > "$EPUB/toc.ncx"
+template content.opf > "$EPUB/content.opf"
+template title_page.xhtml > "$EPUB/text/title_page.xhtml"
+template quran.xhtml > "$EPUB/text/quran.xhtml"
+
+
+pushd "$EBOOK" || exit 1
+zip -r "$TITLE.epub" "./"
+popd || return
+mv "$EBOOK/$TITLE.epub" ./
 }
 
 # Parse command line arguments

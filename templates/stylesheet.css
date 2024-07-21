@@ -1,24 +1,24 @@
 @font-face {
-  font-family: "%font-family";
-  src: url("../fonts/%font-file");
+  font-family: "${FONT_FAMILY}";
+  src: url("../fonts/$( basename $TTF_FILE )");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: "%font-family";
-  src: url("../fonts/%font-file");
+  font-family: "${FONT_FAMILY}";
+  src: url("../fonts/$( basename $TTF_FILE )");
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
-  font-family: "%font-family";
-  src: url("../fonts/%font-file");
+  font-family: "${FONT_FAMILY}";
+  src: url("../fonts/$( basename $TTF_FILE )");
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
-  font-family: "%font-family";
-  src: url("../fonts/%font-file");
+  font-family: "${FONT_FAMILY}";
+  src: url("../fonts/$( basename $TTF_FILE )");
   font-weight: bold;
   font-style: italic;
 }
@@ -26,7 +26,7 @@
 *{
   direction: rtl;
   text-align: center;
-  font-family: "%font-family";
+  font-family: "${FONT_FAMILY}";
 }
 
 h1 {
