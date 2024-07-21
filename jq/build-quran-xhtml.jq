@@ -3,14 +3,14 @@
 | sort_by(first | .page)
 | [
   .[]
-  | map({sura: .sura_name_ar, text: .aya_text, num: .aya_no}) 
+  | map({sura: .sura_name_ar, text: .aya_text, num: .aya_no, sura_no}) 
   | reduce .[] as $ayah (""; 
     .
     + if $ayah.num == 1 then
-	if $ayah.sura != "الفَاتِحة" then "\n</section>\n" else "" end
+	if $ayah.sura_no != 1 then "\n</section>\n" else "" end
 	+ "<section id=\"\($ayah.sura)\" class=\"level2\">\n<h2>\($ayah.sura)</h2>\n"
 	else "" end
-    + if $ayah.num == 1 and $ayah.sura != "الفَاتِحة" and $ayah.sura != "التوبَة" then $basmala else "" end
+    + if $ayah.num == 1 and $ayah.sura_no != 1 and $ayah.sura_no != 9 then $basmala else "" end
     + $ayah.text
     + " "
     )
