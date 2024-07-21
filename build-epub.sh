@@ -154,10 +154,12 @@ echo "successfully built $TITLE.epub!"
 
 # Parse command line arguments
 narration="Hafs"  # Default narration
+title="Quran"
 while getopts "n:" opt; do
   case $opt in
     n)
       narration=$OPTARG
+      title="Quran $narration"
       ;;
     *)
       echo "Usage: $0 [-n <narration>]"
@@ -192,4 +194,4 @@ json_file=${extracted_files%:*}
 ttf_file=${extracted_files##*:}
 
 echo "Running builder script..."
-build-epub "$json_file" "$ttf_file" "Quran ($narration)"
+build-epub "$json_file" "$ttf_file" "$title"
