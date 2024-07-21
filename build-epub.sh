@@ -73,16 +73,15 @@ extract_files() {
     fi
   done
 
-  echo "Extracting $json_file from $zip_path..."
+  echo "Extracting $json_file from $zip_path..." >&2
   unzip -o -j "$zip_path" "$json_file" -d "$CACHE_DIR" >/dev/null
-  echo "Extracting $ttf_file from $zip_path..."
+  echo "Extracting $ttf_file from $zip_path..." >&2
   unzip -o -j "$zip_path" "$ttf_file" -d "$CACHE_DIR" >/dev/null
 
   json_file="$CACHE_DIR/$(basename "$json_file")"
   ttf_file="$CACHE_DIR/$(basename "$ttf_file")"
 
-  echo "Running builder script..."
-  build-epub "$json_file" "$ttf_file" "Quran ($narration)"
+  echo "$json_file:$ttf_file"
 }
 
 build-epub() {
@@ -161,11 +160,18 @@ if [ ! -d "$CACHE_DIR" ]; then
   mkdir -p "$CACHE_DIR"
 fi
 
-download_and_verify "$narration"
-
-# Check for download error (exit if curl fails)
+download_and_verify "$BASE_URL/${NARRATION_ZIP_FILES[$narration]}" "$CACHE_DIR/${NARRATION_ZIP_FILES[$narration]}" "${NARRATION_SHA1[$narration]}"
 if [ $? -ne 0 ]; then
   exit 1
 fi
 
-extract_files "$narration"
+extracted_files=$(extract_files "$narration")
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+json_file=${extracted_files%:*}
+ttf_file=${extracted_files##*:}
+
+echo "Running builder script..."
+build-epub "$json_file" "$ttf_file" "Quran ($narration).epub"
