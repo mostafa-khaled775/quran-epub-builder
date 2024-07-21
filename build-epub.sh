@@ -75,9 +75,9 @@ extract_files() {
   done
 
   echo "Extracting $json_file from $zip_path..."
-  unzip -o -j "$zip_path" "$json_file" -d "$CACHE_DIR"
+  unzip -o -j "$zip_path" "$json_file" -d "$CACHE_DIR" >/dev/null
   echo "Extracting $ttf_file from $zip_path..."
-  unzip -o -j "$zip_path" "$ttf_file" -d "$CACHE_DIR"
+  unzip -o -j "$zip_path" "$ttf_file" -d "$CACHE_DIR" >/dev/null
 
   json_file="$CACHE_DIR/$(basename "$json_file")"
   ttf_file="$CACHE_DIR/$(basename "$ttf_file")"
@@ -128,10 +128,12 @@ template title_page.xhtml > "$EPUB/text/title_page.xhtml"
 template quran.xhtml > "$EPUB/text/quran.xhtml"
 
 
-pushd "$EBOOK" || exit 1
-zip -r "$TITLE.epub" "./"
-popd || return
+pushd "$EBOOK" >/dev/null || exit 1
+zip -r "$TITLE.epub" "./" >/dev/null
+popd >/dev/null || return
 mv "$EBOOK/$TITLE.epub" ./
+
+echo "successfully built $TITLE.epub!"
 }
 
 # Parse command line arguments
