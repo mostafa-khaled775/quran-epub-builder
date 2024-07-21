@@ -22,6 +22,18 @@
   font-weight: bold;
   font-style: italic;
 }
+@font-face {
+  font-family: "Amiri";
+  src: url("../fonts/Amiri-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Scheherazade New";
+  src: url("../fonts/ScheherazadeNew-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
 
 *{
   direction: rtl;
@@ -41,4 +53,18 @@ h2 {
 
 .basmala {
   text-align: center;
+  font-family: Amiri;
 }
+
+.basmala-title-page {
+  text-align: center;
+  font-family: Scheherazade New;
+  font-size: 500%;
+  /* Center vertically and horizontally */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+

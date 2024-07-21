@@ -3,7 +3,10 @@
 # Define cache directory and base URL
 CACHE_DIR=".quran_cache"  # Hidden directory in the current directory
 BASE_URL="https://download.qurancomplex.gov.sa/resources_dev/"
-
+AMIRI_URL="https://github.com/aliftype/amiri/releases/download/1.000/Amiri-1.000.zip"  
+AMIRI_SHA1="818dfe4198d4d981e2d040fefc1c4b37f3f6ef5d"
+SCHEHERAZADE_NEW_URL="https://software.sil.org/downloads/r/scheherazade/ScheherazadeNew-4.000.zip"
+SCHEHERAZADE_NEW_SHA1="9c4496b98204e66549df8fdb0166c653d9324080"
 
 # Define narration to zip file name mapping (associative array)
 declare -A NARRATION_ZIP_FILES=(
@@ -96,7 +99,7 @@ EPUB="$EBOOK/EPUB"
 
 mkdir -p "$EBOOK"
 mkdir -p "$META"
-mkdir -p "$EPUB"/{styles,fonts,text}
+mkdir -p "$EPUB"/{styles,fonts,text,images}
 
 FONT_FAMILY=$(fc-query -f '%{family[0]}\n' "$TTF_FILE")
 TOC_XHTML=$(jq --from-file jq/build-toc-xhtml.jq -r < "$JSON_FILE")
@@ -104,6 +107,21 @@ TOC_NCX=$(jq --from-file jq/build-toc-ncx.jq -r < "$JSON_FILE")
 QURAN_XHTML=$(jq --from-file jq/build-quran-xhtml.jq -r < "$JSON_FILE")
 
 cp "$TTF_FILE" "$EPUB/fonts/"
+
+download_and_verify "$AMIRI_URL" "$CACHE_DIR/Amiri.zip" "$AMIRI_SHA1"
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+unzip -o -j "$CACHE_DIR/Amiri.zip" Amiri-1.000/Amiri-Regular.ttf -d "$CACHE_DIR" >/dev/null
+cp "$CACHE_DIR/Amiri-Regular.ttf" "$EPUB/fonts/"
+
+download_and_verify "$SCHEHERAZADE_NEW_URL" "$CACHE_DIR/scheherazade-new.zip" "$SCHEHERAZADE_NEW_SHA1"
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+unzip -o -j "$CACHE_DIR/scheherazade-new.zip" ScheherazadeNew-4.000/ScheherazadeNew-Regular.ttf -d "$CACHE_DIR" >/dev/null
+cp "$CACHE_DIR/ScheherazadeNew-Regular.ttf" "$EPUB/fonts/"
+
 
 template() {
   file=$1
@@ -174,4 +192,4 @@ json_file=${extracted_files%:*}
 ttf_file=${extracted_files##*:}
 
 echo "Running builder script..."
-build-epub "$json_file" "$ttf_file" "Quran ($narration).epub"
+build-epub "$json_file" "$ttf_file" "Quran ($narration)"

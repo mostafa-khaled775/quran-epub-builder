@@ -14,6 +14,8 @@
     <item id="title_page_xhtml" href="text/title_page.xhtml" media-type="application/xhtml+xml" />
     <item id="quran_xhtml" href="text/quran.xhtml" media-type="application/xhtml+xml" />
     <item id="$(basename $TTF_FILE | sed 's/\./_/')" href="fonts/$(basename $TTF_FILE)" media-type="font/ttf" />
+    <item id="amiri_ttf" href="fonts/Amiri-Regular.ttf" media-type="font/ttf" />
+    <item id="scheherazadenew_regular_ttf" href="fonts/ScheherazadeNew-Regular.ttf" media-type="font/ttf" />
   </manifest>
   <spine toc="ncx">
     <itemref idref="title_page_xhtml" linear="yes" />

@@ -1,4 +1,4 @@
- "\n<p class=\"basmala\">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ </p>\n" as $basmala
+ "\n<p class=\"basmala\">﷽</p>\n" as $basmala
 | group_by(.page)
 | sort_by(first | .page)
 | [
