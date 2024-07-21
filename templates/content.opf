@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package version="3.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="epub-id-1" prefix="ibooks: http://vocabulary.itunes.apple.com/rdf/ibooks/vocabulary-extensions-1.0/">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <Text Direction>Uses Right To Left Text</Text Direction>
     <dc:identifier id="epub-id-1">urn:uuid:fe4dcb6a-6da9-4265-a161-ece2789fe09e</dc:identifier>
     <dc:title id="epub-title-1">${TITLE}</dc:title>
     <dc:date id="epub-date">2024-07-21T03:19:44Z</dc:date>
-    <dc:language>en-US</dc:language>
+    <dc:language>ar</dc:language>
     <meta property="dcterms:modified">$( date -u +"%Y-%m-%dT%H:%M:%SZ" )</meta>
   </metadata>
   <manifest>
