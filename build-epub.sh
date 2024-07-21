@@ -28,29 +28,28 @@ declare -A NARRATION_SHA1=(
 
 # Function to download and verify the zip file
 download_and_verify() {
-  local narration=$1
-  local zip_file="${NARRATION_ZIP_FILES[$narration]}"
-  local sha1_expected="${NARRATION_SHA1[$narration]}"
-  local zip_path="$CACHE_DIR/$zip_file"
+  local url=$1
+  local file=$2
+  local sha1_expected=$3
 
   mkdir -p "$CACHE_DIR"
 
-  if [ -f "$zip_path" ]; then
-    echo "File $zip_path already exists."
+  if [ -f "$file" ]; then
+    echo "File $file already exists." >&2
   else
-    echo "Downloading $zip_file..."
-    curl -sSL --output "$zip_path" "$BASE_URL/$zip_file"
+    echo "Downloading $file..." >&2
+    curl -sSL --output "$file" "$url"
   fi
 
-  echo "Verifying SHA-1 checksum..."
-  local sha1_actual=$(sha1sum "$zip_path" | awk '{ print $1 }')
+  echo "Verifying SHA-1 checksum..." >&2
+  local sha1_actual=$(sha1sum "$file" | awk '{ print $1 }')
 
   if [ "$sha1_actual" = "$sha1_expected" ]; then
-    echo "SHA-1 checksum matches."
+    echo "SHA-1 checksum matches." >&2
   else
-    echo "SHA-1 checksum does not match. Download might be corrupted."
-    echo expected: "$sha1_expected"
-    echo found: "$sha1_actual"
+    echo "SHA-1 checksum does not match. Download might be corrupted." >&2
+    echo expected: "$sha1_expected" >&2
+    echo found: "$sha1_actual" >&2
     return 1
   fi
 }
